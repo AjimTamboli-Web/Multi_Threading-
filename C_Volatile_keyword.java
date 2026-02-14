@@ -33,25 +33,65 @@ import java.util.logging.Logger;
      }  
      
  *  Note that :: volatile should not be confused with the static modifier. static variables are class 
-             members that are shared among all objects. There is only one copy of them in the main memory.
+            members that are shared among all objects. There is only one copy of them in the main memory.
              
              
  */
 public class C_Volatile_keyword {
-	
+
+    // static used here because a non-static variable cannot be referenced from a static context
 	private static final Logger LOGGER 
-	 =   Logger.getLogger(C_Volatile_keyword.class.getName());
-	
+	 =   Logger.getLogger(C_Volatile_keyword.class.getName());	
     private static volatile int MY_INT = 0;
 
+// exit variable to stop both the main and inside threads  (2nd example)
+//    static boolean exit = false;        // o/p infinite loop
+    
+    static volatile boolean exit = false; 
+    // above shows that when we use a volatile boolean flag, we do not run into infinite loops. 
+    //This is because the volatile variable directly stored in the main memory. In other words, changes
+    //made by one thread are visible to other threads. Thus using volatile makes our code, thread safe.
+    
    public static void main(String[] args) {
 		    
 		        new ChangeListener().start();
 		        new ChangeMaker().start();
+		        
+//************************************************************************************
+		        // 2nd example::
+		        System.out.println("started main thread..");
+
+		        // a thread inside main thread
+		        new Thread() {
+		            public void run()
+		            {
+		                System.out.println("started inside thread..");
+
+		        // inside thread caches the value of exit,so changes made to exit are not visible here
+		                while (!exit) // will run infinitely
+		                {
+		                }
+
+		                // this will not be printed.
+		                System.out.println("exiting inside thread..");
+		            }
+		        }.start();
+
+		        try {
+		            Thread.sleep(500);
+		        }
+		        catch (InterruptedException e) {
+		            System.out.println("Caught :" + e);
+		        }
+
+		        // so that we can stop the threads
+		        exit = true;
+		        System.out.println("exiting main thread.."); 
+		        
  }
 
    
-static class ChangeListener extends Thread {
+   static class ChangeListener extends Thread {
 		        @Override
 		        public void run()
 		        {
