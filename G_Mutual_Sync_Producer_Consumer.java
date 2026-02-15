@@ -37,11 +37,11 @@ public class G_Mutual_Sync_Producer_Consumer {
  * 		
  */
 		
-//		Comm_shar sh = new Comm_shar();
-//		Prod pro = new Prod(sh);
-//		Consu con = new Consu(sh);	
-//		pro.start();
-//		con.start();
+		Comm_shar sh = new Comm_shar();
+		Prod pro = new Prod(sh);
+		Consu con = new Consu(sh);	
+		pro.start();
+		con.start();
 		
 		
 		 System.out.println("Main thread started");
@@ -66,7 +66,7 @@ public class G_Mutual_Sync_Producer_Consumer {
 }
 
 //*******************1> Example **********************************************************************
-/*
+
 class Comm_shar{
 	List<Integer> li = new ArrayList<>();
 	int num = 1;
@@ -126,7 +126,7 @@ class Consu extends Thread{
 		}
 	}
 	}
-}    */
+}    
 
 //********************2> Example**********************************************************************
 // Now, we are going to understand what producer-consumer problem is. In this one thread add items to a
